@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CineBook – Movie Ticket Management System</title>
+  <meta name="description" content="Book movie tickets online. Choose your date, show, and seats in seconds." />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     STICKY HEADER
+════════════════════════════════════════════════════════════ -->
+<header class="site-header">
+  <div class="container">
+    <div class="header-inner">
+
+      <div class="site-logo">Cine<span>Book</span></div>
+
+      <!-- Find Booking -->
+      <div class="header-search">
+        <input id="inp-find-booking" type="number" min="1"
+               placeholder="Booking ID" aria-label="Enter Booking ID" />
+        <button id="btn-find-booking" class="btn-sm">Find Booking</button>
+      </div>
+
+      <!-- Find Payment -->
+      <div class="header-search">
+        <input id="inp-find-payment" type="number" min="1"
+               placeholder="Payment ID" aria-label="Enter Payment ID" />
+        <button id="btn-find-payment" class="btn-sm">Find Payment</button>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════════════════════
+     PROGRESS INDICATOR
+════════════════════════════════════════════════════════════ -->
+<div class="container">
+  <div class="progress-bar-wrap" role="navigation" aria-label="Booking steps">
+    <div class="progress-step active">1. Date</div>
+    <div class="progress-step">2. Show</div>
+    <div class="progress-step">3. Seats</div>
+    <div class="progress-step">4. Done</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     MAIN CONTENT
+════════════════════════════════════════════════════════════ -->
+<main class="main-content">
+  <div class="container">
+
+    <!-- ── STEP 1 & 2: Date + Shows ─────────────────────── -->
+    <section id="step1" class="step-panel active">
+
+      <h1 class="section-title">Book Your Show</h1>
+      <p class="section-subtitle">Select a date to view available shows</p>
+
+      <!-- Date pills -->
+      <div class="date-row" id="date-row" role="group" aria-label="Choose date">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Show cards grid -->
+      <div class="show-grid" id="show-grid">
+        <!-- Populated by JS -->
+      </div>
+
+    </section>
+
+    <!-- ── STEP 2: Seat Map + Summary Panel ─────────────── -->
+    <section id="step2" class="step-panel">
+
+      <button id="btn-back-shows" class="btn-back" aria-label="Back to shows">
+        &#8592; Back to Shows
+      </button>
+
+      <div class="seat-section">
+
+        <!-- Seat map -->
+        <div class="seat-map-wrap">
+          <h2 class="section-title" style="font-size:18px;margin-bottom:20px">Select Your Seats</h2>
+
+          <!-- Price type info -->
+          <div class="price-info" id="price-info"></div>
+
+          <!-- Seat counters -->
+          <div class="seat-counters">
+            <div class="counter-item">
+              <span class="counter-num" id="cnt-total">—</span>
+              Total
+            </div>
+            <div class="counter-item">
+              <span class="counter-num" id="cnt-booked" style="color:var(--error)">—</span>
+              Booked
+            </div>
+            <div class="counter-item">
+              <span class="counter-num" id="cnt-avail" style="color:var(--success)">—</span>
+              Available
+            </div>
+          </div>
+
+          <!-- Screen arc -->
+          <div class="screen-bar" aria-hidden="true"></div>
+
+          <!-- Seats rendered here by JS -->
+          <div id="seat-map"></div>
+
+          <!-- Legend -->
+          <div class="seat-legend" role="list">
+            <div class="legend-item" role="listitem">
+              <span class="legend-dot avail"></span> Available
+            </div>
+            <div class="legend-item" role="listitem">
+              <span class="legend-dot selected"></span> Selected
+            </div>
+            <div class="legend-item" role="listitem">
+              <span class="legend-dot booked"></span> Booked
+            </div>
+          </div>
+        </div>
+
+        <!-- Booking summary / form panel -->
+        <aside class="summary-panel" aria-label="Booking summary">
+          <h2 class="summary-title">Summary</h2>
+
+          <!-- Show mini-info -->
+          <div class="show-info-mini" id="summary-show-info"></div>
+
+          <!-- Selected seats list -->
+          <div class="selected-seats-list" id="selected-seats-list" aria-live="polite">
+            <span class="text-muted">No seats selected yet</span>
+          </div>
+
+          <!-- Total price -->
+          <div class="total-price" id="total-price" aria-live="polite">&#8377;0</div>
+
+          <!-- Booking form -->
+          <div class="form-group">
+            <label for="inp-name" class="form-label">Full Name</label>
+            <input id="inp-name" type="text" class="form-input"
+                   placeholder="Enter your name" autocomplete="name" />
+            <div id="err-name" class="field-error"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="inp-email" class="form-label">Email Address</label>
+            <input id="inp-email" type="email" class="form-input"
+                   placeholder="you@example.com" autocomplete="email" />
+            <div id="err-email" class="field-error"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="inp-phone" class="form-label">Phone Number</label>
+            <input id="inp-phone" type="tel" class="form-input"
+                   placeholder="10-digit mobile" autocomplete="tel" maxlength="10" />
+            <div id="err-phone" class="field-error"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="inp-payment" class="form-label">Payment Method</label>
+            <select id="inp-payment" class="form-input">
+              <option value="UPI">UPI</option>
+              <option value="Card">Card</option>
+              <option value="NetBanking">NetBanking</option>
+              <option value="Cash">Cash</option>
+            </select>
+          </div>
+
+          <button id="btn-book" class="btn-primary" disabled aria-label="Book selected seats">
+            Book Now
+          </button>
+        </aside>
+
+      </div>
+    </section>
+
+    <!-- ── STEP 3 (unused slot, seats are step 2) ────────── -->
+    <section id="step3" class="step-panel"></section>
+
+    <!-- ── STEP 4: Receipt / Payment Details ─────────────── -->
+    <section id="step4" class="step-panel">
+      <button class="btn-back" onclick="goHome()" aria-label="Return to home">
+        &#8592; Back to Home
+      </button>
+      <div id="receipt-content">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+  </div><!-- /.container -->
+</main>
+
+<!-- Toast container (notifications) -->
+<div id="toast-container" class="toast-container" aria-live="assertive" role="status"></div>
+
+<script src="/static/script.js"></script>
+</body>
+</html>
